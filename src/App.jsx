@@ -4,7 +4,7 @@ import MainLayout from '@components/Layout/Layout';
 function App() {
     return (
         <>
-            <MyHeader />;
+            <MyHeader />
         </>
     );
 }
