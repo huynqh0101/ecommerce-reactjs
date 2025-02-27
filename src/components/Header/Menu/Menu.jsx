@@ -1,5 +1,7 @@
+import styles from '../styles.module.scss';
 function Menu({ content, href }) {
-    return <div>{content}</div>;
+    const { menu } = styles;
+    return <div className={menu}>{content}</div>;
 }
 
 export default Menu;
