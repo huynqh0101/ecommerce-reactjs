@@ -5,7 +5,6 @@
     @include flex_box_custom(center, center, 0px);
     left: 0;
     right: 0;
-    position: absolute;
 }
 
 .topHeader {
@@ -33,11 +32,7 @@
 }
 
 .containerBoxIcon {
-    @include flex_box_custom(center, center, 20px);
-
-    &:hover {
-        cursor: pointer;
-    }
+    @include flex_box_custom(center, center, 10px);
 }
 
 .containerBox {
@@ -62,15 +57,6 @@
     padding-top: 9px;
     font-size: 15px;
     color: $primary_color;
-    position: relative;
-
-    .subMenu {
-        position: absolute;
-        background-color: #fff;
-        width: 100%;
-        padding: 10px;
-        top: 40px;
-    }
 }
 
 .menu::after {
@@ -90,21 +76,4 @@
 .menu:hover::after {
     opacity: 1;
     transform: scale(1);
-}
-
-.boxCart {
-    position: relative;
-
-    .quantity {
-        position: absolute;
-        top: -5px;
-        right: -10px;
-        background-color: $primary_color;
-        font-size: 10px;
-        color: #fff;
-        @include radius_common(50%);
-        width: 15px;
-        height: 15px;
-        @include flex_box_custom(center, center, 0px);
-    }
 }
