@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { createContext } from 'react';
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const SideBarContext = createContext();
 
 export const SidebarProvider = ({ children }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [type, setType] = useState('');
 
-    const value = { isOpen, setIsOpen };
+    const value = { isOpen, setIsOpen, type, setType };
 
     return (
         <SideBarContext.Provider value={value}>
