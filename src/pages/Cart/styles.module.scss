@@ -65,10 +65,13 @@
     @include flex_box_custom(space-between, flex-start, 30px);
 
     .cartTable {
-        width: 100%;
+        // width: 100%;
         margin: 0 auto;
         padding-bottom: 15px;
         border-bottom: 1px solid #e1e1e1;
+
+        position: relative;
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -155,12 +158,14 @@
     }
 
     .containerRight {
-        flex-grow: 1;
+        // flex-grow: 1;
+        width: 40%;
     }
 
     .containerSummary {
         padding: 25px;
         border: 2px solid #333;
+        position: relative;
 
         .title {
             font-size: 14px;
@@ -235,4 +240,68 @@
         color: $thr_color;
         margin-top: 10px;
     }
+
+    .boxFooter {
+        @include flex_box_custom(space-between, center, 0px);
+        margin-top: 15px;
+
+        .boxCoupon {
+            @include flex_box_custom(flex-start, center, 0px);
+
+            input {
+                border: 1px solid #e1e1e1;
+                padding: 8px 15px;
+                width: 300px;
+                outline: none;
+            }
+
+            button {
+                height: 36px;
+                border-radius: 0px;
+                padding: 0px 10px;
+                font-size: 12px;
+                width: 36px;
+            }
+        }
+
+        .boxBtnDelete {
+            button {
+                height: 36px;
+                font-size: 12px;
+                padding: 0px 30px;
+            }
+        }
+    }
+}
+
+.boxEmptyCart {
+    @include flex_box_custom(center, center, 20px);
+    flex-direction: column;
+
+    width: 100%;
+    font-size: 14px;
+    color: $thr_color;
+
+    .titleEmpty {
+        font-size: 24px;
+        color: $primary_color;
+    }
+
+    .boxBtnEmpty {
+        button {
+            padding: 0 20px;
+            font-size: 12px;
+        }
+    }
+}
+
+.loadingCart {
+    @include flex_box_custom(center, center, 30px);
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.5);
 }

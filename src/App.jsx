@@ -5,16 +5,16 @@ import { SidebarProvider } from '@/contexts/SideBarProvider';
 import SideBar from '@components/Sidebar/Sidebar';
 import { ToastProvider } from '@/contexts/ToastProvider';
 import { StoreProvider } from '@/contexts/storeProvider';
-import { OurShopProvider } from '@/contexts/OurShopProvider'; // ✅ Import OurShopProvider
+import { OurShopProvider } from '@/contexts/OurShopProvider';
 
 function App() {
     return (
-        <StoreProvider>
-            <ToastProvider>
-                <SidebarProvider>
-                    <OurShopProvider> {/* ✅ Bọc ứng dụng với OurShopProvider */}
-                        <SideBar />
-                        <BrowserRouter>
+        <BrowserRouter> {/*BrowserRouter ra ngoài cùng */}
+            <StoreProvider>
+                <ToastProvider>
+                    <SidebarProvider>
+                        <OurShopProvider>
+                            <SideBar />
                             <Suspense fallback={<div>Loading...</div>}>
                                 <Routes>
                                     {routers.map((item, index) => (
@@ -26,11 +26,11 @@ function App() {
                                     ))}
                                 </Routes>
                             </Suspense>
-                        </BrowserRouter>
-                    </OurShopProvider>
-                </SidebarProvider>
-            </ToastProvider>
-        </StoreProvider>
+                        </OurShopProvider>
+                    </SidebarProvider>
+                </ToastProvider>
+            </StoreProvider>
+        </BrowserRouter>
     );
 }
 
