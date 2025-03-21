@@ -2,6 +2,9 @@ import MyHeader from '@components/Header/Header';
 import MainLayout from '@components/Layout/Layout';
 import styles from './styles.module.scss';
 import Button from '@components/Button/Button';
+import { CiHeart } from 'react-icons/ci';
+import { TfiReload } from 'react-icons/tfi';
+import PaymentMethods from '@components/PaymentMethods/PaymentMethods';
 
 function DetailProduct() {
     const {
@@ -18,7 +21,9 @@ function DetailProduct() {
         functionInfo,
         boxBtn,
         incrementAmount,
-        orSection
+        orSection,
+        addFunc,
+        info
     } = styles;
     return (
         <div>
@@ -85,6 +90,38 @@ function DetailProduct() {
                                 <div></div>
                                 <span>OR</span>
                                 <div></div>
+                            </div>
+
+                            <div>
+                                <Button content={'Buy Now'} />
+                            </div>
+
+                            <div className={addFunc}>
+                                <div>
+                                    <CiHeart />
+                                </div>
+
+                                <div>
+                                    <TfiReload />
+                                </div>
+                            </div>
+
+                            <div>
+                                <PaymentMethods />
+                            </div>
+
+                            <div className={info}>
+                                <div>
+                                    Brand: <span>Brand 03</span>
+                                </div>
+
+                                <div>
+                                    SKU: <span>87654</span>
+                                </div>
+
+                                <div>
+                                    Category: <span>Men</span>
+                                </div>
                             </div>
                         </div>
                     </div>
