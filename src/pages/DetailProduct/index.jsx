@@ -5,6 +5,8 @@ import Button from '@components/Button/Button';
 import { CiHeart } from 'react-icons/ci';
 import { TfiReload } from 'react-icons/tfi';
 import PaymentMethods from '@components/PaymentMethods/PaymentMethods';
+import AccordionMenu from '@components/AccordionMenu';
+import { useState } from 'react';
 
 function DetailProduct() {
     const {
@@ -25,6 +27,36 @@ function DetailProduct() {
         addFunc,
         info
     } = styles;
+
+    const [menuSelected, setMenuSelected] = useState(1);
+
+    const dataAccordionMenu = [
+        {
+            id: 1,
+            titleMenu: 'ADDITIONAL INFORMATION',
+            content: <div>CONTENT ADDITIONAL</div>
+        },
+        {
+            id: 2,
+            titleMenu: 'REVIEW (0)',
+            content: <div>CONTENT REVIEW</div>
+        },
+        {
+            id: 3,
+            titleMenu: 'Linh tinh',
+            content: <div>CONTENT REVIEW</div>
+        },
+        {
+            id: 4,
+            titleMenu: 'Vu vo',
+            content: <div>CONTENT REVIEW</div>
+        }
+    ];
+
+    const handleSetMenuSelected = (id) => {
+        setMenuSelected(id);
+    };
+
     return (
         <div>
             <MyHeader />
@@ -123,6 +155,18 @@ function DetailProduct() {
                                     Category: <span>Men</span>
                                 </div>
                             </div>
+
+                            {dataAccordionMenu.map((item, index) => (
+                                <AccordionMenu
+                                    titleMenu={item.titleMenu}
+                                    contentJsx={item.content}
+                                    key={index}
+                                    onClick={() =>
+                                        handleSetMenuSelected(item.id)
+                                    }
+                                    isSelected={menuSelected === item.id}
+                                />
+                            ))}
                         </div>
                     </div>
                 </MainLayout>
