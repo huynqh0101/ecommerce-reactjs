@@ -11,6 +11,22 @@ import InformationProduct from '@/pages/DetailProduct/components/Infomation';
 import ReviewProduct from '@/pages/DetailProduct/components/Review';
 import MyFooter from '@components/Footer/Footer';
 import SliderCommon from '@components/SliderCommon/SliderCommon';
+import ReactImageMagnifier from 'simple-image-magnifier/react';
+import cls from 'classnames';
+
+const tempDataSize = [
+    {
+        name: 'M',
+        amount: '1000'
+    },
+    {
+        name: 'L',
+        amount: '1000'
+    }
+];
+
+const INCREMENT = 'increment';
+const DECREMENT = 'decrement';
 
 function DetailProduct() {
     const {
@@ -29,10 +45,15 @@ function DetailProduct() {
         incrementAmount,
         orSection,
         addFunc,
-        info
+        info,
+        active,
+        clear,
+        activeDisabledBtn
     } = styles;
 
     const [menuSelected, setMenuSelected] = useState(1);
+    const [sizeSelected, setSizeSelected] = useState('');
+    const [quantity, setQuantity] = useState(1);
 
     const dataAccordionMenu = [
         {
@@ -46,6 +67,24 @@ function DetailProduct() {
             content: <ReviewProduct />
         }
     ];
+
+    const dataImageDetail = [
+        'https://xstore.b-cdn.net/elementor2/marseille04/wp-content/uploads/sites/2/2022/12/Image-7.3-min.jpg',
+        'https://xstore.b-cdn.net/elementor2/marseille04/wp-content/uploads/sites/2/2022/12/Image-7.3-min.jpg',
+        'https://xstore.b-cdn.net/elementor2/marseille04/wp-content/uploads/sites/2/2022/12/Image-15.2-min.jpg',
+        'https://xstore.b-cdn.net/elementor2/marseille04/wp-content/uploads/sites/2/2022/12/Image-7.3-min.jpg'
+    ];
+
+    const handleRenderZoomImage = (src) => {
+        return (
+            <ReactImageMagnifier
+                srcPreview={src}
+                srcOriginal={src}
+                width={295}
+                height={350}
+            />
+        );
+    };
 
     const handleSetMenuSelected = (id) => {
         setMenuSelected(id);
@@ -72,6 +111,22 @@ function DetailProduct() {
         }
     ];
 
+    const handleSelectedSize = (size) => {
+        setSizeSelected(size);
+    };
+
+    const handleClearSizeSeleted = () => {
+        setSizeSelected('');
+    };
+
+    const handleSetQuantity = (type) => {
+        if (quantity < 1) return;
+
+        setQuantity((prev) =>
+            type === INCREMENT ? (prev += 1) : quantity === 1 ? 1 : (prev -= 1)
+        );
+    };
+
     return (
         <div>
             <MyHeader />
@@ -86,25 +141,9 @@ function DetailProduct() {
 
                     <div className={contentSection}>
                         <div className={imageBox}>
-                            <img
-                                src='https://xstore.b-cdn.net/elementor2/marseille04/wp-content/uploads/sites/2/2022/12/Image-7.3-min.jpg'
-                                alt='zxczx'
-                            />
-
-                            <img
-                                src='https://xstore.b-cdn.net/elementor2/marseille04/wp-content/uploads/sites/2/2022/12/Image-7.3-min.jpg'
-                                alt='zxczx'
-                            />
-
-                            <img
-                                src='https://xstore.b-cdn.net/elementor2/marseille04/wp-content/uploads/sites/2/2022/12/Image-7.3-min.jpg'
-                                alt='zxczx'
-                            />
-
-                            <img
-                                src='https://xstore.b-cdn.net/elementor2/marseille04/wp-content/uploads/sites/2/2022/12/Image-7.3-min.jpg'
-                                alt='zxczx'
-                            />
+                            {dataImageDetail.map((src) =>
+                                handleRenderZoomImage(src)
+                            )}
                         </div>
                         <div className={infoBox}>
                             <h1>Title Product</h1>
@@ -114,22 +153,64 @@ function DetailProduct() {
                                 sit arcu, quisque arcu purus orci leo.
                             </p>
 
-                            <p className={titleSize}>Size</p>
+                            <p className={titleSize}>Size {sizeSelected}</p>
                             <div className={boxSize}>
-                                <div className={size}>L</div>
-                                <div className={size}>M</div>
-                                <div className={size}>S</div>
+                                {tempDataSize.map((itemSize, index) => {
+                                    return (
+                                        <div
+                                            className={cls(size, {
+                                                [active]:
+                                                    sizeSelected ===
+                                                    itemSize.name
+                                            })}
+                                            key={index}
+                                            onClick={() =>
+                                                handleSelectedSize(
+                                                    itemSize.name
+                                                )
+                                            }
+                                        >
+                                            {itemSize.name}
+                                        </div>
+                                    );
+                                })}
                             </div>
+
+                            {sizeSelected && (
+                                <p
+                                    className={clear}
+                                    onClick={handleClearSizeSeleted}
+                                >
+                                    clear
+                                </p>
+                            )}
 
                             <div className={functionInfo}>
                                 <div className={incrementAmount}>
-                                    <div>-</div>
-                                    <div>1</div>
-                                    <div>+</div>
+                                    <div
+                                        onClick={() =>
+                                            handleSetQuantity(DECREMENT)
+                                        }
+                                    >
+                                        -
+                                    </div>
+                                    <div>{quantity}</div>
+                                    <div
+                                        onClick={() =>
+                                            handleSetQuantity(INCREMENT)
+                                        }
+                                    >
+                                        +
+                                    </div>
                                 </div>
 
                                 <div className={boxBtn}>
-                                    <Button content={'Add to cart'} />
+                                    <Button
+                                        content={'Add to cart'}
+                                        customClassname={
+                                            !sizeSelected && activeDisabledBtn
+                                        }
+                                    />
                                 </div>
                             </div>
 
@@ -140,7 +221,12 @@ function DetailProduct() {
                             </div>
 
                             <div>
-                                <Button content={'Buy Now'} />
+                                <Button
+                                    content={'Buy Now'}
+                                    customClassname={
+                                        !sizeSelected && activeDisabledBtn
+                                    }
+                                />
                             </div>
 
                             <div className={addFunc}>
