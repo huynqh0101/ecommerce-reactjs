@@ -9,6 +9,8 @@ import AccordionMenu from '@components/AccordionMenu';
 import { useState } from 'react';
 import InformationProduct from '@/pages/DetailProduct/components/Infomation';
 import ReviewProduct from '@/pages/DetailProduct/components/Review';
+import MyFooter from '@components/Footer/Footer';
+import SliderCommon from '@components/SliderCommon/SliderCommon';
 
 function DetailProduct() {
     const {
@@ -48,6 +50,27 @@ function DetailProduct() {
     const handleSetMenuSelected = (id) => {
         setMenuSelected(id);
     };
+
+    const tempDataSlider = [
+        {
+            image: 'https://xstore.b-cdn.net/elementor2/marseille04/wp-content/uploads/sites/2/2022/12/Image-15.2-min.jpg',
+            name: 'Test Product 1',
+            price: '1000',
+            size: [{ name: 'L' }, { name: 'S' }]
+        },
+        {
+            image: 'https://xstore.b-cdn.net/elementor2/marseille04/wp-content/uploads/sites/2/2022/12/Image-15.2-min.jpg',
+            name: 'Test Product 1',
+            price: '1000',
+            size: [{ name: 'L' }, { name: 'S' }]
+        },
+        {
+            image: 'https://xstore.b-cdn.net/elementor2/marseille04/wp-content/uploads/sites/2/2022/12/Image-15.2-min.jpg',
+            name: 'Test Product 1',
+            price: '1000',
+            size: [{ name: 'L' }, { name: 'S' }]
+        }
+    ];
 
     return (
         <div>
@@ -161,8 +184,20 @@ function DetailProduct() {
                             ))}
                         </div>
                     </div>
+
+                    <div>
+                        <h2>Related products</h2>
+
+                        <SliderCommon
+                            data={tempDataSlider}
+                            isProductItem
+                            showItem={4}
+                        />
+                    </div>
                 </MainLayout>
             </div>
+
+            <MyFooter />
         </div>
     );
 }
