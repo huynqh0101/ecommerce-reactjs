@@ -7,6 +7,8 @@ import { TfiReload } from 'react-icons/tfi';
 import PaymentMethods from '@components/PaymentMethods/PaymentMethods';
 import AccordionMenu from '@components/AccordionMenu';
 import { useState } from 'react';
+import InformationProduct from '@/pages/DetailProduct/components/Infomation';
+import ReviewProduct from '@/pages/DetailProduct/components/Review';
 
 function DetailProduct() {
     const {
@@ -34,22 +36,12 @@ function DetailProduct() {
         {
             id: 1,
             titleMenu: 'ADDITIONAL INFORMATION',
-            content: <div>CONTENT ADDITIONAL</div>
+            content: <InformationProduct />
         },
         {
             id: 2,
             titleMenu: 'REVIEW (0)',
-            content: <div>CONTENT REVIEW</div>
-        },
-        {
-            id: 3,
-            titleMenu: 'Linh tinh',
-            content: <div>CONTENT REVIEW</div>
-        },
-        {
-            id: 4,
-            titleMenu: 'Vu vo',
-            content: <div>CONTENT REVIEW</div>
+            content: <ReviewProduct />
         }
     ];
 

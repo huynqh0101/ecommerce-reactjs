@@ -14,8 +14,6 @@ function AccordionMenu({ titleMenu, contentJsx, onClick, isSelected }) {
         borderBottom
     } = styles;
 
-    console.log(isSelected);
-
     const handleToggle = () => {
         onClick();
     };
