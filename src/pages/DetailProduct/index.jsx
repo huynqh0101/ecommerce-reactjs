@@ -1,24 +1,26 @@
-import MyHeader from '@components/Header/Header';
-import MainLayout from '@components/Layout/Layout';
-import styles from './styles.module.scss';
-import Button from '@components/Button/Button';
-import { CiHeart } from 'react-icons/ci';
-import { TfiReload } from 'react-icons/tfi';
-import PaymentMethods from '@components/PaymentMethods/PaymentMethods';
-import AccordionMenu from '@components/AccordionMenu';
-import { useState } from 'react';
+import { getDetailProduct, getRelatedProduct } from '@/apis/productsService';
 import InformationProduct from '@/pages/DetailProduct/components/Infomation';
 import ReviewProduct from '@/pages/DetailProduct/components/Review';
+import { handleAddProductToCartCommon } from '@/utils/helper';
+import AccordionMenu from '@components/AccordionMenu';
+import Button from '@components/Button/Button';
 import MyFooter from '@components/Footer/Footer';
-import SliderCommon from '@components/SliderCommon/SliderCommon';
-import ReactImageMagnifier from 'simple-image-magnifier/react';
-import cls from 'classnames';
-import { useEffect } from 'react';
-import { getDetailProduct, getRelatedProduct } from '@/apis/productsService';
-import { useParams } from 'react-router-dom';
+import MyHeader from '@components/Header/Header';
+import MainLayout from '@components/Layout/Layout';
 import LoadingTextCommon from '@components/LoadingTextCommon/LoadingTextCommon';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import PaymentMethods from '@components/PaymentMethods/PaymentMethods';
+import SliderCommon from '@components/SliderCommon/SliderCommon';
+import cls from 'classnames';
+import { useEffect, useState } from 'react';
+import { CiHeart } from 'react-icons/ci';
+import { TfiReload } from 'react-icons/tfi';
+import { useNavigate, useParams } from 'react-router-dom';
+import ReactImageMagnifier from 'simple-image-magnifier/react';
+import styles from './styles.module.scss';
+import { useContext } from 'react';
+import { SideBarContext } from '@/contexts/SideBarProvider';
+import { ToastContext } from '@/contexts/ToastProvider';
+import Cookies from 'js-cookie';
 
 const INCREMENT = 'increment';
 const DECREMENT = 'decrement';
@@ -56,6 +58,11 @@ function DetailProduct() {
     const [isLoading, setIsLoading] = useState(false);
     const param = useParams();
     const navigate = useNavigate();
+    const { setIsOpen, setType, handleGetListProductsCart } =
+        useContext(SideBarContext);
+    const { toast } = useContext(ToastContext);
+    const userId = Cookies.get('userId');
+    const [isLoadingBtn, setIsLoadingBtn] = useState(false);
 
     const dataAccordionMenu = [
         {
@@ -84,27 +91,6 @@ function DetailProduct() {
     const handleSetMenuSelected = (id) => {
         setMenuSelected(id);
     };
-
-    const tempDataSlider = [
-        {
-            image: 'https://xstore.b-cdn.net/elementor2/marseille04/wp-content/uploads/sites/2/2022/12/Image-15.2-min.jpg',
-            name: 'Test Product 1',
-            price: '1000',
-            size: [{ name: 'L' }, { name: 'S' }]
-        },
-        {
-            image: 'https://xstore.b-cdn.net/elementor2/marseille04/wp-content/uploads/sites/2/2022/12/Image-15.2-min.jpg',
-            name: 'Test Product 1',
-            price: '1000',
-            size: [{ name: 'L' }, { name: 'S' }]
-        },
-        {
-            image: 'https://xstore.b-cdn.net/elementor2/marseille04/wp-content/uploads/sites/2/2022/12/Image-15.2-min.jpg',
-            name: 'Test Product 1',
-            price: '1000',
-            size: [{ name: 'L' }, { name: 'S' }]
-        }
-    ];
 
     const handleSelectedSize = (size) => {
         setSizeSelected(size);
@@ -147,6 +133,20 @@ function DetailProduct() {
             toast.error('Có lỗi khi tải dữ liệu');
             setIsLoading(false);
         }
+    };
+
+    const handleAdd = () => {
+        handleAddProductToCartCommon(
+            userId,
+            setIsOpen,
+            setType,
+            toast,
+            sizeSelected,
+            param.id,
+            quantity,
+            setIsLoadingBtn,
+            handleGetListProductsCart
+        );
     };
 
     useEffect(() => {
@@ -263,11 +263,18 @@ function DetailProduct() {
 
                                             <div className={boxBtn}>
                                                 <Button
-                                                    content={'Add to cart'}
+                                                    content={
+                                                        isLoadingBtn ? (
+                                                            <LoadingTextCommon />
+                                                        ) : (
+                                                            'Add to Cart'
+                                                        )
+                                                    }
                                                     customClassname={
                                                         !sizeSelected &&
                                                         activeDisabledBtn
                                                     }
+                                                    onClick={handleAdd}
                                                 />
                                             </div>
                                         </div>
