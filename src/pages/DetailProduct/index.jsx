@@ -13,6 +13,9 @@ import MyFooter from '@components/Footer/Footer';
 import SliderCommon from '@components/SliderCommon/SliderCommon';
 import ReactImageMagnifier from 'simple-image-magnifier/react';
 import cls from 'classnames';
+import { useEffect } from 'react';
+import { getDetailProduct } from '@/apis/productsService';
+import { useParams } from 'react-router-dom';
 
 const tempDataSize = [
     {
@@ -54,6 +57,11 @@ function DetailProduct() {
     const [menuSelected, setMenuSelected] = useState(1);
     const [sizeSelected, setSizeSelected] = useState('');
     const [quantity, setQuantity] = useState(1);
+    const [data, setData] = useState();
+    const [isLoading, setIsLoading] = useState(false);
+    const param = useParams();
+
+    console.log(param);
 
     const dataAccordionMenu = [
         {
@@ -127,9 +135,29 @@ function DetailProduct() {
         );
     };
 
+    const fetchDataDetail = async (id) => {
+        setIsLoading(true);
+        try {
+            const data = await getDetailProduct(id);
+
+            setData(data);
+            setIsLoading(false);
+        } catch (error) {
+            console.log(error);
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (param.id) {
+            fetchDataDetail(param.id);
+        }
+    }, [param]);
+
     return (
         <div>
             <MyHeader />
+
             <div className={container}>
                 <MainLayout>
                     <div className={navigateSection}>
