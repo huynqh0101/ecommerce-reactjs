@@ -14,20 +14,9 @@ import SliderCommon from '@components/SliderCommon/SliderCommon';
 import ReactImageMagnifier from 'simple-image-magnifier/react';
 import cls from 'classnames';
 import { useEffect } from 'react';
-import { getDetailProduct } from '@/apis/productsService';
+import { getDetailProduct, getRelatedProduct } from '@/apis/productsService';
 import { useParams } from 'react-router-dom';
 import LoadingTextCommon from '@components/LoadingTextCommon/LoadingTextCommon';
-
-const tempDataSize = [
-    {
-        name: 'M',
-        amount: '1000'
-    },
-    {
-        name: 'L',
-        amount: '1000'
-    }
-];
 
 const INCREMENT = 'increment';
 const DECREMENT = 'decrement';
@@ -60,6 +49,7 @@ function DetailProduct() {
     const [sizeSelected, setSizeSelected] = useState('');
     const [quantity, setQuantity] = useState(1);
     const [data, setData] = useState();
+    const [relatedData, setRelatedData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const param = useParams();
 
@@ -74,13 +64,6 @@ function DetailProduct() {
             titleMenu: 'REVIEW (0)',
             content: <ReviewProduct />
         }
-    ];
-
-    const dataImageDetail = [
-        'https://xstore.b-cdn.net/elementor2/marseille04/wp-content/uploads/sites/2/2022/12/Image-7.3-min.jpg',
-        'https://xstore.b-cdn.net/elementor2/marseille04/wp-content/uploads/sites/2/2022/12/Image-7.3-min.jpg',
-        'https://xstore.b-cdn.net/elementor2/marseille04/wp-content/uploads/sites/2/2022/12/Image-15.2-min.jpg',
-        'https://xstore.b-cdn.net/elementor2/marseille04/wp-content/uploads/sites/2/2022/12/Image-7.3-min.jpg'
     ];
 
     const handleRenderZoomImage = (src) => {
@@ -148,9 +131,22 @@ function DetailProduct() {
         }
     };
 
+    const fetchDataRelatedProduct = async (id) => {
+        setIsLoading(true);
+        try {
+            const data = await getRelatedProduct(id);
+            setRelatedData(data);
+            setIsLoading(false);
+        } catch (error) {
+            console.log(error);
+            setIsLoading(false);
+        }
+    };
+
     useEffect(() => {
         if (param.id) {
             fetchDataDetail(param.id);
+            fetchDataRelatedProduct(param.id);
         }
     }, [param]);
 
@@ -309,7 +305,7 @@ function DetailProduct() {
                         <h2>Related products</h2>
 
                         <SliderCommon
-                            data={tempDataSlider}
+                            data={relatedData}
                             isProductItem
                             showItem={4}
                         />
