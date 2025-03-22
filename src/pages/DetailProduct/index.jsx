@@ -21,6 +21,7 @@ import { useContext } from 'react';
 import { SideBarContext } from '@/contexts/SideBarProvider';
 import { ToastContext } from '@/contexts/ToastProvider';
 import Cookies from 'js-cookie';
+import { addProductToCart } from '@/apis/cartService';
 
 const INCREMENT = 'increment';
 const DECREMENT = 'decrement';
@@ -63,6 +64,7 @@ function DetailProduct() {
     const { toast } = useContext(ToastContext);
     const userId = Cookies.get('userId');
     const [isLoadingBtn, setIsLoadingBtn] = useState(false);
+    const [isLoadingBtnBuyNow, setIsLoadingBtnBuyNow] = useState(false);
 
     const dataAccordionMenu = [
         {
@@ -147,6 +149,27 @@ function DetailProduct() {
             setIsLoadingBtn,
             handleGetListProductsCart
         );
+    };
+
+    const handleBuyNow = () => {
+        const data = {
+            userId,
+            productId: param.id,
+            quantity,
+            size: sizeSelected
+        };
+
+        setIsLoadingBtnBuyNow(true);
+        addProductToCart(data)
+            .then((res) => {
+                toast.success('Add Product to cart successfully!');
+                setIsLoadingBtnBuyNow(false);
+                navigate('/cart');
+            })
+            .catch((err) => {
+                toast.error('Add Product to cart failed!');
+                setIsLoadingBtnBuyNow(false);
+            });
     };
 
     useEffect(() => {
@@ -287,11 +310,18 @@ function DetailProduct() {
 
                                         <div>
                                             <Button
-                                                content={'Buy Now'}
+                                                content={
+                                                    isLoadingBtnBuyNow ? (
+                                                        <LoadingTextCommon />
+                                                    ) : (
+                                                        'Buy now'
+                                                    )
+                                                }
                                                 customClassname={
                                                     !sizeSelected &&
                                                     activeDisabledBtn
                                                 }
+                                                onClick={handleBuyNow}
                                             />
                                         </div>
 

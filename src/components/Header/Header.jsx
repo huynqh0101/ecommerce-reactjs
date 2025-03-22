@@ -28,11 +28,22 @@ function MyHeader() {
 
     const { scrollPosition } = useScrollHandling();
     const [fixedPosition, setFixedPosition] = useState(false);
-    const { setIsOpen, setType, listProductCart } = useContext(SideBarContext);
+    const {
+        setIsOpen,
+        setType,
+        listProductCart,
+        userId,
+        handleGetListProductsCart
+    } = useContext(SideBarContext);
 
     const handleOpenSideBar = (type) => {
         setIsOpen(true);
         setType(type);
+    };
+
+    const handleOpenCartSideBar = () => {
+        handleGetListProductsCart(userId, 'cart');
+        handleOpenSideBar('cart');
     };
 
     useEffect(() => {
@@ -50,7 +61,7 @@ function MyHeader() {
                     <div className={containerBoxIcon}>
                         {dataBoxIcon.map((item, index) => {
                             return (
-                                <BoxIcon key={index} type={item.type} href={item.href} />
+                                <BoxIcon key= {index} type={item.type} href={item.href} />
                             );
                         })}
                     </div>
@@ -99,7 +110,7 @@ function MyHeader() {
                                 style={{
                                     fontSize: '25px'
                                 }}
-                                onClick={() => handleOpenSideBar('cart')}
+                                onClick={() => handleOpenCartSideBar()}
                             />
 
                             <div className={quantity}>

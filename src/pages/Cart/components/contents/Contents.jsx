@@ -7,6 +7,8 @@ import { SideBarContext } from '@/contexts/SideBarProvider';
 import { addProductToCart, deleteItem, deleteCart } from '@/apis/cartService';
 import { PiShoppingCartLight } from 'react-icons/pi';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { getCart } from '@/apis/cartService';
 
 function Contents() {
     const {
@@ -23,7 +25,8 @@ function Contents() {
         handleGetListProductsCart,
         isLoading,
         setIsLoading,
-        userId
+        userId,
+        setListProductCart
     } = useContext(SideBarContext);
     const navigate = useNavigate();
 
@@ -65,6 +68,18 @@ function Contents() {
     const handleNavigateToShop = () => {
         navigate('/shop');
     };
+
+    useEffect(() => {
+        getCart(userId)
+            .then((res) => {
+                setListProductCart(res.data.data);
+                setIsLoading(false);
+            })
+            .catch((err) => {
+                setListProductCart([]);
+                setIsLoading(false);
+            });
+    }, []);
 
     return (
         <>
