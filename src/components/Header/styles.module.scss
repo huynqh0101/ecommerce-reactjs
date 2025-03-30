@@ -24,7 +24,7 @@
 }
 
 .containerHeader {
-    width: 1250px;
+    width: 1450px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -99,29 +99,25 @@
         top: -5px;
         right: -10px;
         background-color: $primary_color;
-        color: #fff;
         font-size: 10px;
+        color: #fff;
+        @include radius_common(50%);
         width: 15px;
         height: 15px;
         @include flex_box_custom(center, center, 0px);
-        @include radius_common(50%);
     }
 }
 
-.menu {
-    position: relative;
-    padding: 10px;
-    cursor: pointer;
-}
-
 /* Dropdown Menu */
+/* filepath: c:\Users\Huy\OneDrive - vnu.edu.vn\Desktop\Web\ECOMMERSE-REACTJS\ecommerce\src\components\Header\styles.module.scss */
 .dropdownMenu {
     position: absolute;
     top: 100%;
     left: 0;
     background: rgb(255, 255, 255);
     list-style: none;
-    padding: 10px;
+    padding-top: 15px;
+    margin-top: 5px; /* Thêm khoảng cách giữa menu chính và dropdown */
     width: 180px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     display: flex;

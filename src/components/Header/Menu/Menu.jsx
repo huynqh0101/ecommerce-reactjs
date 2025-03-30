@@ -11,19 +11,18 @@ function Menu({ content, href }) {
     const [isShowSubMenu, setIsShowSubMenu] = useState(false);
     const [isShowDropdown, setIsShowDropdown] = useState(false);
     const navigate = useNavigate();
-    const menuRef = useRef(null);
+    const menuRef = useRef(null); // Ref để bao bọc toàn bộ menu
 
-    // Danh sách submenu cho "Elements"
     const productsSubMenu = [
-        { label: 'All Products', link: '/shop/all' }, // Tất cả sản phẩm
-        { label: '🔥 Best Sellers', link: '/shop/best-sellers' }, // Hàng bán chạy
-        { label: 'Tops', link: '/shop/tops' }, // Áo
-        { label: 'Bottoms', link: '/shop/bottoms' }, // Quần
-        { label: 'Sets', link: '/shop/sets' }, // Set quần áo
-        { label: 'Underwear - Boxer', link: '/shop/underwear' }, // Đồ lót
-        { label: 'Accessories', link: '/shop/accessories' } // Phụ kiện
+        { label: 'All Products', link: '/shop/all' },
+        { label: '🔥 Best Sellers', link: '/shop/best-sellers' },
+        { label: 'Tops', link: '/shop/tops' },
+        { label: 'Bottoms', link: '/shop/bottoms' },
+        { label: 'Sets', link: '/shop/sets' },
+        { label: 'Underwear - Boxer', link: '/shop/underwear' },
+        { label: 'Accessories', link: '/shop/accessories' }
     ];
-    
+
     const handleClickShowLogin = () => {
         if (content === 'Sign in' && !userInfo) {
             setIsOpen(true);
@@ -42,7 +41,12 @@ function Menu({ content, href }) {
         }
     };
 
+    let hideTimeout;
+
     const handleMouseEnter = () => {
+        // Hủy bỏ timeout nếu chuột quay lại
+        clearTimeout(hideTimeout);
+
         if (content === 'Sign in' && userInfo) {
             setIsShowSubMenu(true);
         } else if (content === 'Collections') {
@@ -51,27 +55,37 @@ function Menu({ content, href }) {
     };
 
     const handleMouseLeave = (event) => {
-        if (menuRef.current && !menuRef.current.contains(event.relatedTarget)) {
-            setIsShowSubMenu(false);
-            setIsShowDropdown(false);
-        }
+        // Đặt timeout để ẩn menu sau một khoảng thời gian
+        hideTimeout = setTimeout(() => {
+            if (
+                !menuRef.current ||
+                (menuRef.current &&
+                    !menuRef.current.contains(event.relatedTarget))
+            ) {
+                setIsShowSubMenu(false);
+                setIsShowDropdown(false);
+            }
+        }, 100); // Thời gian trễ 200ms
     };
-
     return (
-        <div 
-            className={menu} 
-            onMouseEnter={handleMouseEnter} 
-            onMouseLeave={handleMouseLeave} 
-            ref={menuRef}
+        <div
+            className={menu}
+            ref={menuRef} // Gắn ref vào toàn bộ khu vực menu
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave} // Áp dụng sự kiện onMouseLeave cho toàn bộ menu
             onClick={handleClickShowLogin}
         >
             {handleRenderText(content)}
 
-            {/* Dropdown Menu cho "Elements" */}
+            {/* Dropdown Menu cho "Collections" */}
             {isShowDropdown && content === 'Collections' && (
                 <div className={dropdownMenu}>
                     {productsSubMenu.map((item, index) => (
-                        <a key={index} href={item.link} className={dropdownItem}>
+                        <a
+                            key={index}
+                            href={item.link}
+                            className={dropdownItem}
+                        >
                             {item.label}
                         </a>
                     ))}
