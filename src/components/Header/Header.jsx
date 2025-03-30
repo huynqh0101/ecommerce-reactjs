@@ -12,6 +12,7 @@ import { useState } from 'react';
 import classNames from 'classnames';
 import { useContext } from 'react';
 import { SideBarContext } from '@/contexts/SideBarProvider';
+import { Link } from 'react-router-dom';
 
 function MyHeader() {
     const {
@@ -61,35 +62,51 @@ function MyHeader() {
                     <div className={containerBoxIcon}>
                         {dataBoxIcon.map((item, index) => {
                             return (
-                                <BoxIcon key= {index} type={item.type} href={item.href} />
+                                <BoxIcon
+                                    key={index}
+                                    type={item.type}
+                                    href={item.href}
+                                />
                             );
                         })}
                     </div>
                     <div className={containerMenu}>
                         {dataMenu.slice(0, 3).map((item, index) => {
                             return (
-                                <Menu key={index} content={item.content} href={item.href} />
+                                <Menu
+                                    key={index}
+                                    content={item.content}
+                                    href={item.href}
+                                />
                             );
                         })}
                     </div>
                 </div>
                 <div>
-                    <img
-                        src={Logo}
-                        alt='Logo'
-                        style={{
-                            width: '153px',
-                            height: '53px'
-                        }}
-                    />
+                    <Link to='/' className={containerBox}>
+                        <img
+                            src={Logo}
+                            alt='Logo'
+                            style={{
+                                width: '153px',
+                                height: '53px'
+                            }}
+                        />
+                    </Link>
                 </div>
                 <div className={containerBox}>
                     <div className={containerMenu}>
-                        {dataMenu.slice(3, dataMenu.length).map((item, index) => {
-                            return (
-                                <Menu key={index} content={item.content} href={item.href} />
-                            );
-                        })}
+                        {dataMenu
+                            .slice(3, dataMenu.length)
+                            .map((item, index) => {
+                                return (
+                                    <Menu
+                                        key={index}
+                                        content={item.content}
+                                        href={item.href}
+                                    />
+                                );
+                            })}
                     </div>
 
                     <div className={containerBoxIcon}>

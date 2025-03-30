@@ -52,14 +52,18 @@
     @include flex_box_custom(center, center, 0px);
 
     background-color: $primary_color;
-    width: 26px;
-    height: 26px;
+    width: 30px;
+    height: 30px;
+    img {
+        width: 20px;
+        height: 20px;
+    }
 }
 
 .menu {
     cursor: pointer;
     padding-top: 9px;
-    font-size: 15px;
+    font-size: 16px;
     color: $primary_color;
     position: relative;
 
@@ -108,13 +112,13 @@
     }
 }
 
-/* Dropdown Menu */
 /* filepath: c:\Users\Huy\OneDrive - vnu.edu.vn\Desktop\Web\ECOMMERSE-REACTJS\ecommerce\src\components\Header\styles.module.scss */
 .dropdownMenu {
     position: absolute;
     top: 100%;
     left: 0;
     background: rgb(255, 255, 255);
+    font-size: 14px;
     list-style: none;
     padding-top: 15px;
     margin-top: 5px; /* Thêm khoảng cách giữa menu chính và dropdown */

@@ -9,7 +9,9 @@ import { OurShopProvider } from '@/contexts/OurShopProvider';
 
 function App() {
     return (
-        <BrowserRouter> {/*BrowserRouter ra ngoài cùng */}
+        <BrowserRouter>
+            {' '}
+            {/*BrowserRouter ra ngoài cùng */}
             <StoreProvider>
                 <ToastProvider>
                     <SidebarProvider>
