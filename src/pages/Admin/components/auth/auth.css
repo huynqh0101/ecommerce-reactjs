@@ -7,7 +7,7 @@
     font-family: 'Montserrat', sans-serif;
 }
 
-body {
+.auth-page {
     background-color: #c9d6ff;
     background: url('../../../../assets/images/Banner-Ecommerse.jpeg') no-repeat
         center center/cover;

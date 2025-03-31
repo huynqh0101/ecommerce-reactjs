@@ -24,6 +24,12 @@ const routers = [
     {
         path: '/admin',
         component: lazy(() => import('@pages/Admin/Admin'))
+    },
+    {
+        path: '/admin/dashboard',
+        component: lazy(() =>
+            import('@pages/Admin/components/dashboard/adminDashboard')
+        )
     }
 ];
 
