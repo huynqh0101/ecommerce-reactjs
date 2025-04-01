@@ -1,26 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import ProductForm from './components/ProductForm';
+import ProductTable from './components/ProductTable';
+import Sidebar from './components/Sidebar';
+import './Dashboard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
 
 const AdminDashboard = () => {
-    const [products, setProducts] = useState([
-        {
-            id: 1,
-            name: 'Áo Hoodie Nam Nữ 3',
-            price: 199.99,
-            description:
-                'Áo hoodie unisex với chất liệu vải nỉ cao cấp, mềm mại, giữ ấm tốt.',
-            type: 'Unisex',
-            size: [
-                { name: 'S', amount: 10 },
-                { name: 'M', amount: 15 }
-            ],
-            material: 'Cotton',
-            images: [
-                'https://example.com/images/hoodie1.jpg',
-                'https://example.com/images/hoodie2.jpg'
-            ]
-        }
-    ]);
+    const [products, setProducts] = useState([]);
     const [formData, setFormData] = useState({
         id: null,
         name: '',
@@ -32,293 +19,176 @@ const AdminDashboard = () => {
         images: ['']
     });
     const [isEditing, setIsEditing] = useState(false);
-    const [isFormVisible, setIsFormVisible] = useState(false); // State để kiểm soát hiển thị form
+    const [isFormVisible, setIsFormVisible] = useState(false);
+    const [collapsed, setCollapsed] = useState(false); // Trạng thái thu gọn sidebar
 
-    // Xử lý thay đổi input
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+    // Lấy danh sách sản phẩm từ API
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await axios.get(
+                    'http://localhost:3000/products'
+                );
+                setProducts(response.data); // Cập nhật danh sách sản phẩm
+                console.log('Danh sách sản phẩm:', response.data); // Log kiểm tra
+            } catch (error) {
+                console.error('Lỗi khi lấy danh sách sản phẩm:', error);
+            }
+        };
+        fetchProducts();
+    }, []); // Gọi API khi component được mount
+
+    // Thêm size mới
+    const handleAddSize = () => {
+        setFormData({
+            ...formData,
+            size: [...formData.size, { name: '', amount: '' }]
+        });
     };
 
-    // Xử lý thay đổi kích thước
-    const handleSizeChange = (index, field, value) => {
-        const updatedSizes = [...formData.size];
-        updatedSizes[index][field] = value;
+    // Xóa size
+    const handleRemoveSize = (index) => {
+        const updatedSizes = formData.size.filter((_, i) => i !== index);
         setFormData({ ...formData, size: updatedSizes });
     };
 
-    // Thêm sản phẩm mới
-    const handleAddProduct = (e) => {
-        e.preventDefault();
-        if (
-            !formData.name ||
-            !formData.price ||
-            !formData.description ||
-            !formData.type ||
-            !formData.material
-        ) {
-            return alert('Vui lòng nhập đầy đủ thông tin!');
-        }
-        const newProduct = {
+    // Thay đổi hình ảnh
+    const handleImageChange = (index, value) => {
+        const updatedImages = [...formData.images];
+        updatedImages[index] = value;
+        setFormData({ ...formData, images: updatedImages });
+    };
+
+    // Thêm hình ảnh mới
+    const handleAddImage = () => {
+        setFormData({
             ...formData,
-            id: products.length + 1,
-            price: parseFloat(formData.price)
-        };
-        setProducts([...products, newProduct]);
-        setFormData({
-            id: null,
-            name: '',
-            price: '',
-            description: '',
-            type: '',
-            size: [{ name: '', amount: '' }],
-            material: '',
-            images: ['']
+            images: [...formData.images, '']
         });
-        setIsFormVisible(false); // Ẩn form sau khi thêm
     };
 
-    // Sửa sản phẩm
-    const handleEditProduct = (product) => {
-        setIsEditing(true);
-        setFormData(product);
-        setIsFormVisible(true); // Hiển thị form khi sửa
+    // Xóa hình ảnh
+    const handleRemoveImage = (index) => {
+        const updatedImages = formData.images.filter((_, i) => i !== index);
+        setFormData({ ...formData, images: updatedImages });
     };
 
-    const handleUpdateProduct = (e) => {
-        e.preventDefault();
-        setProducts(
-            products.map((product) =>
-                product.id === formData.id
-                    ? { ...formData, price: parseFloat(formData.price) }
-                    : product
-            )
-        );
-        setIsEditing(false);
-        setFormData({
-            id: null,
-            name: '',
-            price: '',
-            description: '',
-            type: '',
-            size: [{ name: '', amount: '' }],
-            material: '',
-            images: ['']
-        });
-        setIsFormVisible(false); // Ẩn form sau khi cập nhật
+    // Thêm sản phẩm
+    const handleAddProduct = async (e) => {
+        e.preventDefault(); // Ngăn chặn reload trang
+        try {
+            const response = await axios.post(
+                'http://localhost:3000/products/create',
+                {
+                    name: formData.name,
+                    description: formData.description,
+                    price: parseFloat(formData.price), // Chuyển giá thành số
+                    type: formData.type,
+                    size: formData.size,
+                    material: formData.material,
+                    images: formData.images
+                }
+            );
+
+            // Cập nhật danh sách sản phẩm với sản phẩm mới từ response
+            setProducts([...products, response.data]);
+            setIsFormVisible(false); // Ẩn form sau khi thêm
+            alert('Sản phẩm đã được thêm thành công!');
+        } catch (error) {
+            console.error('Lỗi khi thêm sản phẩm:', error);
+            alert('Đã xảy ra lỗi khi thêm sản phẩm.');
+        }
     };
 
     // Xóa sản phẩm
-    const handleDeleteProduct = (id) => {
-        setProducts(products.filter((product) => product.id !== id));
-    };
-
-    // Hiển thị form thêm sản phẩm mới
-    const handleShowAddForm = () => {
-        setIsEditing(false);
-        setFormData({
-            id: null,
-            name: '',
-            price: '',
-            description: '',
-            type: '',
-            size: [{ name: '', amount: '' }],
-            material: '',
-            images: ['']
-        });
-        setIsFormVisible(true); // Hiển thị form
-    };
-
-    // Hủy thêm/sửa sản phẩm
-    const handleCancel = () => {
-        setIsFormVisible(false); // Ẩn form
-        setFormData({
-            id: null,
-            name: '',
-            price: '',
-            description: '',
-            type: '',
-            size: [{ name: '', amount: '' }],
-            material: '',
-            images: ['']
-        });
+    const handleDeleteProduct = async (id) => {
+        try {
+            await axios.delete(`http://localhost:3000/products/${id}`);
+            setProducts(products.filter((product) => product.id !== id));
+            alert('Sản phẩm đã được xóa thành công!');
+        } catch (error) {
+            console.error('Lỗi khi xóa sản phẩm:', error);
+            alert('Đã xảy ra lỗi khi xóa sản phẩm.');
+        }
     };
 
     return (
-        <div className='container mt-5'>
-            <h1 className='text-center mb-4'>Quản lý sản phẩm</h1>
+        <div className='admin-dashboard d-flex'>
+            {/* Sidebar */}
+            <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
 
-            {/* Nút thêm sản phẩm mới */}
-            {!isFormVisible && (
-                <div className='text-center mb-4'>
+            {/* Nội dung chính */}
+            <div className='container-fluid mt-4'>
+                <h1 className='text-center mb-4'>Quản lý sản phẩm</h1>
+                {!isFormVisible && (
                     <button
-                        className='btn btn-success'
-                        onClick={handleShowAddForm}
+                        className='btn btn-success mb-4'
+                        onClick={() => {
+                            setFormData({
+                                id: null,
+                                name: '',
+                                price: '',
+                                description: '',
+                                type: '',
+                                size: [{ name: '', amount: '' }],
+                                material: '',
+                                images: ['']
+                            }); // Reset formData
+                            setIsEditing(false); // Đảm bảo không ở chế độ chỉnh sửa
+                            setIsFormVisible(true); // Hiển thị form
+                        }}
                     >
                         Thêm sản phẩm mới
                     </button>
-                </div>
-            )}
-
-            {/* Form thêm/sửa sản phẩm */}
-            {isFormVisible && (
-                <form
-                    className='row g-3 mb-4'
-                    onSubmit={
-                        isEditing ? handleUpdateProduct : handleAddProduct
-                    }
-                >
-                    <div className='col-md-6'>
-                        <input
-                            type='text'
-                            name='name'
-                            className='form-control'
-                            placeholder='Tên sản phẩm'
-                            value={formData.name}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div className='col-md-6'>
-                        <input
-                            type='number'
-                            name='price'
-                            className='form-control'
-                            placeholder='Giá sản phẩm'
-                            value={formData.price}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div className='col-md-12'>
-                        <textarea
-                            name='description'
-                            className='form-control'
-                            placeholder='Mô tả sản phẩm'
-                            rows='3'
-                            value={formData.description}
-                            onChange={handleInputChange}
-                        ></textarea>
-                    </div>
-                    <div className='col-md-6'>
-                        <input
-                            type='text'
-                            name='type'
-                            className='form-control'
-                            placeholder='Loại sản phẩm'
-                            value={formData.type}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div className='col-md-6'>
-                        <input
-                            type='text'
-                            name='material'
-                            className='form-control'
-                            placeholder='Chất liệu'
-                            value={formData.material}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div className='col-md-12'>
-                        <label>Kích thước:</label>
-                        {formData.size.map((size, index) => (
-                            <div key={index} className='d-flex mb-2'>
-                                <input
-                                    type='text'
-                                    className='form-control me-2'
-                                    placeholder='Tên kích thước (S, M, L)'
-                                    value={size.name}
-                                    onChange={(e) =>
-                                        handleSizeChange(
-                                            index,
-                                            'name',
-                                            e.target.value
-                                        )
-                                    }
-                                />
-                                <input
-                                    type='number'
-                                    className='form-control'
-                                    placeholder='Số lượng'
-                                    value={size.amount}
-                                    onChange={(e) =>
-                                        handleSizeChange(
-                                            index,
-                                            'amount',
-                                            e.target.value
-                                        )
-                                    }
-                                />
-                            </div>
-                        ))}
-                    </div>
-                    <div className='col-md-12'>
-                        <input
-                            type='text'
-                            name='images'
-                            className='form-control'
-                            placeholder='URL hình ảnh (ngăn cách bằng dấu phẩy)'
-                            value={formData.images.join(', ')}
-                            onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    images: e.target.value.split(', ')
-                                })
-                            }
-                        />
-                    </div>
-                    <div className='col-md-12 text-center'>
-                        <button type='submit' className='btn btn-primary me-2'>
-                            {isEditing ? 'Cập nhật sản phẩm' : 'Thêm sản phẩm'}
-                        </button>
-                        <button
-                            type='button'
-                            className='btn btn-secondary'
-                            onClick={handleCancel}
-                        >
-                            Hủy
-                        </button>
-                    </div>
-                </form>
-            )}
-
-            {/* Danh sách sản phẩm */}
-            <table className='table table-bordered table-hover'>
-                <thead className='table-light'>
-                    <tr>
-                        <th>ID</th>
-                        <th>Tên sản phẩm</th>
-                        <th>Giá</th>
-                        <th>Loại</th>
-                        <th>Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {products.map((product) => (
-                        <tr key={product.id}>
-                            <td>{product.id}</td>
-                            <td>{product.name}</td>
-                            <td>{product.price} VND</td>
-                            <td>{product.type}</td>
-                            <td>
-                                <button
-                                    className='btn btn-warning btn-sm me-2'
-                                    onClick={() => handleEditProduct(product)}
-                                >
-                                    Sửa
-                                </button>
-                                <button
-                                    className='btn btn-danger btn-sm'
-                                    onClick={() =>
-                                        handleDeleteProduct(product.id)
-                                    }
-                                >
-                                    Xóa
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+                )}
+                {isFormVisible && (
+                    <ProductForm
+                        formData={formData}
+                        isEditing={isEditing}
+                        handleInputChange={(e) =>
+                            setFormData({
+                                ...formData,
+                                [e.target.name]: e.target.value
+                            })
+                        }
+                        handleSizeChange={(index, field, value) => {
+                            const updatedSizes = [...formData.size];
+                            updatedSizes[index][field] = value;
+                            setFormData({ ...formData, size: updatedSizes });
+                        }}
+                        handleAddSize={handleAddSize}
+                        handleRemoveSize={handleRemoveSize}
+                        handleImageChange={handleImageChange}
+                        handleAddImage={handleAddImage}
+                        handleRemoveImage={handleRemoveImage}
+                        handleAddProduct={handleAddProduct}
+                        handleUpdateProduct={(e) => {
+                            e.preventDefault();
+                            setProducts(
+                                products.map((product) =>
+                                    product.id === formData.id
+                                        ? {
+                                              ...formData,
+                                              price: parseFloat(formData.price)
+                                          }
+                                        : product
+                                )
+                            );
+                            setIsFormVisible(false);
+                        }}
+                        handleCancel={() => setIsFormVisible(false)}
+                    />
+                )}
+                <ProductTable
+                    products={products}
+                    handleEditProduct={(product) => {
+                        setIsEditing(true);
+                        setFormData(product);
+                        setIsFormVisible(true);
+                    }}
+                    handleDeleteProduct={handleDeleteProduct}
+                />
+            </div>
         </div>
     );
 };
