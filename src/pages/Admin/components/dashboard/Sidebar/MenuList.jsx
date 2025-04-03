@@ -8,16 +8,20 @@ import {
     PayCircleOutlined,
     SettingOutlined
 } from '@ant-design/icons';
-import './Sidebar.css'; // Import CSS file for styling
-
+import './Sidebar.css';
+import { useNavigate } from 'react-router-dom';
 const { SubMenu } = Menu; // Import SubMenu riêng biệt
 
 const MenuList = ({ darkTheme }) => {
+    const navigate = useNavigate();
     const menuItems = [
         {
             key: 'home',
             icon: <HomeOutlined />,
-            label: 'Home'
+            label: 'Home',
+            onClick: () => {
+                navigate('/admin/home');
+            }
         },
         {
             key: 'activity',

@@ -1,97 +1,41 @@
-/* Tổng quan */
-.admin-dashboard {
-    padding: 20px;
-    font-family: 'Arial', sans-serif;
-    background-color: #f8f9fa; /* Màu nền nhạt */
-    min-height: 100vh; /* Đảm bảo chiều cao tối thiểu */
-}
-
-/* Tiêu đề */
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 2rem;
-    color: #343a40; /* Màu chữ đậm */
-    font-weight: bold;
-}
-
-/* Form */
-form {
-    background-color: #ffffff; /* Nền trắng */
-    padding: 20px;
-    border-radius: 8px; /* Bo góc */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
-    margin-bottom: 20px;
-}
-
-/* Nút */
-button {
-    transition: all 0.3s ease; /* Hiệu ứng hover */
-}
-
-button:hover {
-    transform: scale(1.05); /* Phóng to nhẹ khi hover */
-    opacity: 0.9; /* Giảm độ trong suốt */
-}
-
-/* Bảng */
-table {
-    width: 100%;
-    margin-top: 20px;
-    border-collapse: collapse;
-    background-color: #ffffff; /* Nền trắng */
-    border-radius: 8px; /* Bo góc */
-    overflow: hidden; /* Ẩn góc thừa */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
-}
-
-table th,
-table td {
-    text-align: center;
-    padding: 12px 15px;
-    border-bottom: 1px solid #dee2e6; /* Đường kẻ dưới */
-}
-
-table th {
-    background-color: #343a40; /* Màu nền tiêu đề */
-    color: #ffffff; /* Màu chữ tiêu đề */
-    font-weight: bold;
-}
-
-table tr:nth-child(even) {
-    background-color: #f8f9fa; /* Màu nền xen kẽ */
-}
-
-table tr:hover {
-    background-color: #e9ecef; /* Màu nền khi hover */
-}
-
-/* Card */
+/* Thiết lập cho card */
 .card {
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
-    background-color: #ffffff;
-    padding: 20px;
-    margin-bottom: 20px;
+    border: 1px solid #ddd; /* Đặt viền cho card */
+    border-radius: 8px; /* Làm tròn các góc */
+    overflow: hidden; /* Đảm bảo ảnh không tràn ra ngoài card */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Tạo bóng mờ cho card */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng hover */
+    background-color: #fff; /* Màu nền của card */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    height: 400px; /* Đặt chiều cao cố định cho card */
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .admin-dashboard {
-        padding: 10px;
-    }
+/* Hiển thị ảnh */
+.card-img-top {
+    width: 100%;
+    height: 100%; /* Chiếm hết chiều cao của card */
+    object-fit: contain; /* Đảm bảo ảnh không bị cắt */
+    border-radius: 8px; /* Làm tròn các góc ảnh */
+    margin-bottom: 15px; /* Khoảng cách dưới ảnh */
+}
 
-    h1 {
-        font-size: 1.5rem;
-    }
+/* Thông tin sản phẩm */
+.card-body {
+    text-align: center; /* Căn giữa nội dung trong card */
+}
 
-    form {
-        padding: 15px;
-    }
+.card-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
+}
 
-    table th,
-    table td {
-        font-size: 0.9rem;
-        padding: 8px 10px;
-    }
+.card-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: #555;
 }

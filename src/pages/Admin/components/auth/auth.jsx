@@ -11,6 +11,7 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const Login = () => {
     const [active, setActive] = useState(false);
@@ -26,6 +27,10 @@ const Login = () => {
     const handleLoginClick = () => {
         setActive(false);
     };
+
+    useEffect(() => {
+        setActive(false);
+    }, []);
 
     const handleLogin = async (e) => {
         e.preventDefault();
