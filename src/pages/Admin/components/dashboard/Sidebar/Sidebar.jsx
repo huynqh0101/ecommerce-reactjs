@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import './SideBar/Sidebar.css'; // Tạo file CSS riêng để định dạng sidebar
+import './Sidebar.css'; // Tạo file CSS riêng để định dạng sidebar
 import { Button, Layout, theme } from 'antd';
-import Logo from './SideBar/Logo';
-import MenuList from './SideBar/MenuList';
-import ToggleThemeButton from './SideBar/ToggleThemeButton';
+import Logo from './Logo';
+import MenuList from './MenuList';
+import ToggleThemeButton from './ToggleThemeButton';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 
 const { Header, Sider } = Layout;

@@ -128,7 +128,7 @@ const Login = () => {
                 </div>
 
                 <div className='toggle-container'>
-                    <div className='toggle'>
+                    <div className='toggle-2'>
                         <div className='toggle-panel toggle-left'>
                             <h1>Welcome Back!</h1>
                             <p>

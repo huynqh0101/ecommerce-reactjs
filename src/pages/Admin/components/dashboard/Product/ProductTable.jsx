@@ -16,7 +16,7 @@ const ProductTable = ({ products, handleEditProduct, handleDeleteProduct }) => {
             <tbody>
                 {products.map((product, index) => (
                     <tr key={product.id}>
-                        <td>{index + 1}</td> {/* Đánh số thứ tự từ 1 */}
+                        <td>{index + 1}</td>
                         <td>{product.name}</td>
                         <td>{product.price} VND</td>
                         <td>{product.type}</td>
@@ -29,7 +29,7 @@ const ProductTable = ({ products, handleEditProduct, handleDeleteProduct }) => {
                             </button>
                             <button
                                 className='btn btn-danger btn-sm'
-                                onClick={() => handleDeleteProduct(product.id)}
+                                onClick={() => handleDeleteProduct(product._id)}
                             >
                                 Xóa
                             </button>
