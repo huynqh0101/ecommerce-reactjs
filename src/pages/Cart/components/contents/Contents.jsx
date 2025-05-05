@@ -70,15 +70,17 @@ function Contents() {
     };
 
     useEffect(() => {
-        getCart(userId)
-            .then((res) => {
-                setListProductCart(res.data.data);
-                setIsLoading(false);
-            })
-            .catch((err) => {
-                setListProductCart([]);
-                setIsLoading(false);
-            });
+        if (userId) {
+            getCart(userId)
+                .then((res) => {
+                    setListProductCart(res.data.data);
+                    setIsLoading(false);
+                })
+                .catch((err) => {
+                    setListProductCart([]);
+                    setIsLoading(false);
+                });
+        }
     }, []);
 
     return (

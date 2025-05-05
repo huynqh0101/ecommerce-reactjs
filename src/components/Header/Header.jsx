@@ -13,6 +13,7 @@ import classNames from 'classnames';
 import { useContext } from 'react';
 import { SideBarContext } from '@/contexts/SideBarProvider';
 import { Link } from 'react-router-dom';
+import { StoreContext } from '@/contexts/storeProvider';
 
 function MyHeader() {
     const {
@@ -36,16 +37,25 @@ function MyHeader() {
         userId,
         handleGetListProductsCart
     } = useContext(SideBarContext);
+    const { userInfo } = useContext(StoreContext);
 
     const handleOpenSideBar = (type) => {
         setIsOpen(true);
         setType(type);
     };
 
+    console.log('userId', userInfo);
+
     const handleOpenCartSideBar = () => {
         handleGetListProductsCart(userId, 'cart');
         handleOpenSideBar('cart');
     };
+
+    const totalItemCart = listProductCart.length
+        ? listProductCart.reduce((acc, item) => {
+              return acc + item.quantity;
+          }, 0)
+        : 0;
 
     useEffect(() => {
         setFixedPosition(scrollPosition > 80);
@@ -131,7 +141,7 @@ function MyHeader() {
                             />
 
                             <div className={quantity}>
-                                {listProductCart.length}
+                                {totalItemCart || userInfo?.amountCart || 0}
                             </div>
                         </div>
                     </div>
