@@ -27,9 +27,11 @@ function Menu({ content, href }) {
         if (content === 'Sign in' && !userInfo) {
             setIsOpen(true);
             setType('login');
+            return;
         }
         if (content === 'Our Shop') {
             navigate('/shop');
+            return;
         }
         if (href) {
             navigate(href);

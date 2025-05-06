@@ -1,10 +1,11 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
+import { Autoplay, Navigation } from 'swiper/modules';
 import { useRef } from 'react';
 
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
+import 'swiper/css/autoplay';
 
 // Custom styles for the component
 const styles = {
@@ -75,8 +76,15 @@ function Logos() {
                 onSlideChange={() => console.log('slide change')}
                 onSwiper={(swiper) => console.log(swiper)}
                 navigation={true}
-                modules={[Navigation]}
+                modules={[Navigation, Autoplay]}
                 className='logos-slider' // Add class for targeting in CSS
+                autoplay={{
+                    delay: 2500,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true
+                }}
+                loop={true}
+                speed={1000}
             >
                 {dataLogos.map((item) => (
                     <SwiperSlide
