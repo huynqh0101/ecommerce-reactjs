@@ -31,6 +31,9 @@ function Menu({ content, href }) {
         if (content === 'Our Shop') {
             navigate('/shop');
         }
+        if (href) {
+            navigate(href);
+        }
     };
 
     const handleRenderText = (content) => {

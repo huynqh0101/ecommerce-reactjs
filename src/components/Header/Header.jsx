@@ -44,8 +44,6 @@ function MyHeader() {
         setType(type);
     };
 
-    console.log('userId', userInfo);
-
     const handleOpenCartSideBar = () => {
         handleGetListProductsCart(userId, 'cart');
         handleOpenSideBar('cart');

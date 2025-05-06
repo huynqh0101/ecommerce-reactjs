@@ -7,7 +7,7 @@ const dataBoxIcon = [
 const dataMenu = [
     { content: 'Collections', href: '#' },
     { content: 'Our Shop', href: '#' },
-    { content: 'About us', href: '#' },
+    { content: 'About us', href: '/about-us' },
     { content: 'Contacts', href: '#' },
     { content: 'Search', href: '#' },
     { content: 'Sign in', href: '#' }
