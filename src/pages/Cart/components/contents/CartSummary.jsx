@@ -6,6 +6,8 @@ import { useContext } from 'react';
 import { SideBarContext } from '@/contexts/SideBarProvider';
 import LoadingCart from '@/pages/Cart/components/Loading';
 import PaymentMethods from '@components/PaymentMethods/PaymentMethods';
+import { StepperContext } from '@/contexts/SteperProvider';
+import { handleTotalPrice } from '@/utils/helper';
 
 const CartSummary = () => {
     const {
@@ -19,10 +21,11 @@ const CartSummary = () => {
         containerRight
     } = styles;
     const { listProductCart, isLoading } = useContext(SideBarContext);
+    const { setCurrentStep } = useContext(StepperContext);
 
-    const total = listProductCart.reduce((acc, item) => {
-        return acc + item.total;
-    }, 0);
+    const handleProcessCheckout = () => {
+        setCurrentStep(2);
+    };
 
     return (
         <div className={containerRight}>
@@ -31,15 +34,20 @@ const CartSummary = () => {
 
                 <div className={cls(boxTotal, subTotal)}>
                     <div>Subtotal</div>
-                    <div className={price}>${total.toFixed(2)}</div>
+                    <div className={price}>
+                        ${handleTotalPrice(listProductCart).toFixed(2)}
+                    </div>
                 </div>
 
                 <div className={cls(boxTotal, totals)}>
                     <div>TOTAL</div>
-                    <div>${total.toFixed(2)}</div>
+                    <div>${handleTotalPrice(listProductCart).toFixed(2)}</div>
                 </div>
 
-                <Button content={'PROCEED TO CHECKOUT'} />
+                <Button
+                    content={'PROCEED TO CHECKOUT'}
+                    onClick={handleProcessCheckout}
+                />
                 <div className={space} />
                 <Button content={'CONTINUE SHOPPING'} isPriamry={false} />
 

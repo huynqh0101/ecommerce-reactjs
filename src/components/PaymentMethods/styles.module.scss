@@ -2,7 +2,7 @@
 @import '@styles/mixin.module.scss';
 
 .containerMethods {
-    padding: 25px 0;
+    padding: 20px 0; // Giảm padding từ 25px xuống 20px
     position: relative;
     width: 100%;
     border: 1px solid #e1e1e1;
@@ -15,21 +15,33 @@
         transform: translateX(-50%);
         background-color: #fff;
         padding: 0 10px;
-        font-size: 14px;
+        font-size: 12px; // Giảm từ 14px xuống 12px
         text-transform: uppercase;
 
         span {
             color: #2e7d32;
         }
     }
+
     .boxImgMethods {
-        @include flex_box_custom(center, center, 10px);
+        @include flex_box_custom(
+            center,
+            center,
+            6px
+        ); // Giảm gap từ 10px xuống 6px
+
+        // Thêm CSS cho các icons
+        img {
+            max-width: 50px; // Giới hạn kích thước icon (thay vì mặc định)
+            height: auto;
+            object-fit: contain;
+        }
     }
 }
 
 .textSecure {
     text-align: center;
-    font-size: 14px;
+    font-size: 12px; // Giảm từ 14px xuống 12px
     color: $thr_color;
-    margin: 10px;
+    margin: 8px; // Giảm từ 10px xuống 8px
 }
