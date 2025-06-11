@@ -1,33 +1,51 @@
+// Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation } from 'swiper/modules';
+import { Navigation } from 'swiper/modules';
 import { useRef } from 'react';
 
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
-import 'swiper/css/autoplay';
 
 // Custom styles for the component
 const styles = {
     container: {
         position: 'relative',
-        marginTop: '80px'
+        marginTop: '80px',
+        overflow: 'visible' // Đảm bảo nút điều hướng không bị cắt
     }
 };
 
 // Add custom CSS for hover effect
 const customStyles = `
-   .logos-slider .swiper-button-next,
-   .logos-slider .swiper-button-prev {
-     opacity: 0;
-     transition: opacity 0.3s ease;
-   }
-   
-   .logos-slider:hover .swiper-button-next,
-   .logos-slider:hover .swiper-button-prev {
-     opacity: 1;
-   }
- `;
+  .logos-slider .swiper-button-next,
+  .logos-slider .swiper-button-prev {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    color: black;
+    width: 44px;
+    height: 44px;
+    margin-top: -22px;
+  }
+  
+  .logos-slider:hover .swiper-button-next,
+  .logos-slider:hover .swiper-button-prev {
+    opacity: 1;
+  }
+
+  .logos-slider .swiper-button-next {
+    right: -20px; /* Đặt nút next xa hơn về bên phải */
+  }
+
+  .logos-slider .swiper-button-prev {
+    left: -20px; /* Đặt nút prev xa hơn về bên trái */
+  }
+
+  .logos-slider .swiper-button-next::after,
+  .logos-slider .swiper-button-prev::after {
+    font-size: 24px;
+  }
+`;
 
 function Logos() {
     const dataLogos = [
@@ -76,15 +94,8 @@ function Logos() {
                 onSlideChange={() => console.log('slide change')}
                 onSwiper={(swiper) => console.log(swiper)}
                 navigation={true}
-                modules={[Navigation, Autoplay]}
+                modules={[Navigation]}
                 className='logos-slider' // Add class for targeting in CSS
-                autoplay={{
-                    delay: 2500,
-                    disableOnInteraction: false,
-                    pauseOnMouseEnter: true
-                }}
-                loop={true}
-                speed={1000}
             >
                 {dataLogos.map((item) => (
                     <SwiperSlide
