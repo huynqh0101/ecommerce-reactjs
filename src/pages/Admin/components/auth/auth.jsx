@@ -49,14 +49,19 @@ const Login = () => {
                 }
             );
 
-            const { token, refreshToken, id, msg } = response.data;
+            if (response.data.token) {
+                const { token, refreshToken, id, msg } = response.data;
 
-            localStorage.setItem('accessToken', token);
-            localStorage.setItem('refreshToken', refreshToken);
-            localStorage.setItem('userId', id);
+                localStorage.setItem('accessToken', token);
+                localStorage.setItem('refreshToken', refreshToken);
+                localStorage.setItem('userId', id);
 
-            setMessage(msg || 'Đăng nhập thành công!');
-            navigate('/admin/dashboard'); // Chuyển hướng đến trang dashboard
+                setMessage(msg || 'Đăng nhập thành công!');
+                navigate('/admin/dashboard'); // Chuyển hướng đến trang dashboard
+            } else {
+                // Không có token = đăng nhập thất bại
+                setMessage(response.data.msg || 'Đăng nhập thất bại!');
+            }
         } catch (error) {
             setMessage(
                 error.response?.data?.msg ||
